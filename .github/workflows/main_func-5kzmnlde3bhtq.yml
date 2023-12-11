@@ -1,9 +1,6 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy dotnet core app to Azure Function App - func-5kzmnlde3bhtq
 
-on: |+
+on:
   push:
     branches:
       - main
@@ -16,7 +13,9 @@ env:
 jobs:
   build-and-deploy:
     runs-on: windows-latest
-    
+    permissions:
+      id-token: write # This is required for requesting the JWT
+
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
@@ -33,6 +32,13 @@ jobs:
           dotnet build --configuration Release --output ./output
           popd
       
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9409CB7B955443F2921AB1BFE42A0D34 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FEEDD8076CB14B36803CADBC40ABF83C }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DEE087DDA8454EB293844ACDD637EEA4 }}
+
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
@@ -40,4 +46,3 @@ jobs:
           app-name: 'func-5kzmnlde3bhtq'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E1BA4823BF764779B4CB7CA65877D045 }}
