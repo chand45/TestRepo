@@ -1,0 +1,24 @@
+{
+  "generatedBy": "Microsoft.NET.Sdk.Functions.Generator-4.2.0",
+  "configurationSource": "attributes",
+  "bindings": [
+    {
+      "type": "httpTrigger",
+      "methods": [
+        "get",
+        "post"
+      ],
+      "authLevel": "anonymous",
+      "name": "req"
+    },
+    {
+      "type": "queue",
+      "connection": "AzureWebJobsStorage",
+      "queueName": "outqueue",
+      "name": "msg"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../bin/GettingStartedWithFunctionApp.dll",
+  "entryPoint": "GettingStartedWithFunctionApp.TestingAzureFunctions.RunningFunction"
+}
